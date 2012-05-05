@@ -54,7 +54,7 @@ initShaders = ->
   shaderProgram.pMatrixUniform = gl.getUniformLocation  shaderProgram, "uPMatrix"
   shaderProgram.mvMatrixUniform = gl.getUniformLocation  shaderProgram, "uMVMatrix"
 
-  return null;
+  return null
 
 mvMatrix = mat4.create()
 pMatrix = mat4.create()
@@ -63,8 +63,8 @@ setMatrixUniforms = ->
   gl.uniformMatrix4fv shaderProgram.pMatrixUniform, false, pMatrix
   gl.uniformMatrix4fv shaderProgram.mvMatrixUniform, false, mvMatrix
 
-triangleVertexPositionBuffer = null;
-squareVertexPositionBuffer = null;
+triangleVertexPositionBuffer = null
+squareVertexPositionBuffer = null
 
 initBuffers = ->
   triangleVertexPositionBuffer = gl.createBuffer()
