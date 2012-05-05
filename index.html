@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <title>Angry Bears</title>
+    <script type="text/javascript" src="src/glMatrix-0.9.5.min.js"></script>
+    <script type="text/javascript" src="src/gl.js"></script>
+    <script id="shader-fs" type="x-shader/x-fragment">
+      precision mediump float;
+
+      void main(void) {
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+      }
+    </script>
+
+    <script id="shader-vs" type="x-shader/x-vertex">
+      attribute vec3 aVertexPosition;
+
+      uniform mat4 uMVMatrix;
+      uniform mat4 uPMatrix;
+
+      void main(void) {
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+      }
+    </script>
+
+    <style type="text/css">
+      body 
+      {
+        margin: 0px; 
+        padding: 0px; 
+        overflow: hidden;
+        background: #000;
+      }
+
+      canvas 
+      {
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+        color: #000;
+        font-family: Allan, Arial;
+        font-size: 40px;
+      }
+
+      #canvas-holder.active 
+      {
+        position: absolute;
+        padding: 0px;
+        left: 50%;
+        top: 50%;
+      }
+
+      #canvas-holder.inactive 
+      {
+        position: absolute;
+        top:50%;
+        width: 100%;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body onload="webGLStart()">
+    <canvas id="game_canvas"></canvas>
+  </body>
+</html>
