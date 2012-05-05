@@ -1,0 +1,71 @@
+<Bear>
+	<Name>Bearialis</Name>
+	<Action>
+		<Name>Punch</Name>
+		<TriggerConditions>
+			<Stand condition="all">
+				<Action condition="equals">Idle</Stance>
+				<Key condition="single">P</Key>
+			</Stand>
+			<Jump condition="all">
+				<Action condition="equals">Idle</Stance>
+				<Key condition="single">P</Key>
+			</Jump>
+			<Crouch condition="all">
+				<Action condition="equals">Idle</Stance>
+				<Key condition="single">P</Key>
+			</Crouch>
+		</TriggerConditions>
+		<InterruptConditions>
+			<Stand condition="all">
+				<Action condition="equals">Struck</Action>
+			</Stand>
+			<Jump condition="all">
+				<Action condition="equals">Struck</Action>
+			</Jump>
+			<Crouch condition="all">
+				<Action condition="equals">Struck</Action>
+			</Crouch>
+		</InterruptConditions>
+		<InterruptActions>
+				<Stand condition="all">
+						
+				</Stand>
+				<Jump>Struck</Jump>
+
+		<FrameCounts>
+			<Stand>15</Stand>
+			<Jump>10</Jump>
+			<Crouch>12</Crouch>
+		</FrameCounts>
+		<Textures>
+			<Stand>punch_stand</Standing>
+			<Jump>punch_jump</Jump>
+			<Crouch>punch_crouch</Crouch>
+		</Textures>
+		<SelfHitboxes>
+			<Stand>
+				<Frame count="1">1,1,1,1,1,1,1,1,1,1,1</Frame>
+			</Stand>
+			<Jump>
+				<Frame count="1">1,1,1,1,1,1,1,1,1,1,1</Frame>
+				<Frame count="2">1,1,1,1,1,1,1,1,1,1,1</Frame>
+			</Jump>
+			<Crouch>
+				<Frame count="1">1,1,1,1,1,1,1,1,1,1,1</Frame>
+				<Frame count="2">1,1,1,1,1,1,1,1,1,1,1</Frame>
+			</Crouch>
+		</SelfHitboxes>
+		<AttackHitboxes>
+			<Stand>
+				<Frame count="1">1,1,1,1,1,1,1,1,1,1,1</Frame>
+			</Stand>
+			<Jump>
+				<Frame count="1">1,1,1,1,1,1,1,1,1,1,1</Frame>
+				<Frame count="2">1,1,1,1,1,1,1,1,1,1,1</Frame>
+			</Jump>
+			<Crouch>
+				<Frame count="1">1,1,1,1,1,1,1,1,1,1,1</Frame>
+				<Frame count="2">1,1,1,1,1,1,1,1,1,1,1</Frame>
+			</Crouch>
+		</AttackHitboxes>

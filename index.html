@@ -3,9 +3,9 @@
     <title>Angry Bears</title>
     <script type="text/javascript" src="src/glMatrix-0.9.5.min.js"></script>
     <script type="text/javascript" src="src/gl.js"></script>
-    <script type="text/javascript" src="src/input.js"></script>
-    <script type="text/javascript" src="src/game.js"></script>   
-    <script type="text/javascript" src="src/application.js"></script> 
+    <script type="text/javascript" src="src/game.js"></script>
+    <script type="text/javascript" src="src/application.js"></script>    
+
     <script id="shader-fs" type="x-shader/x-fragment">
       precision mediump float;
 
@@ -44,6 +44,11 @@
         font-size: 40px;
       }
 
+      div
+      {
+        color: #FFF
+      }
+
       #canvas-holder.active 
       {
         position: absolute;
@@ -61,7 +66,8 @@
       }
     </style>
   </head>
-  <body onload="webGLStart()">
+  <body onload="application.runGame()">
+    <div id="text">test</div>
     <canvas id="game_canvas"></canvas>
   </body>
 </html>
