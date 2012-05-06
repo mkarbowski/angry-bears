@@ -5,12 +5,19 @@ Game = (function() {
 
   Game.name = 'Game';
 
-  function Game() {}
-
   Game.currentKey = null;
 
+  Game.stage = null;
+
+  function Game() {
+    this.stage = new StageBackground("resources/red.png");
+  }
+
   Game.prototype.draw = function() {
-    return null;
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    return this.stage.draw();
   };
 
   Game.prototype.keyDown = function(keyEvent) {

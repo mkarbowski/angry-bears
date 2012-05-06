@@ -3,36 +3,8 @@
 	<Action>
 		<Name>Punch</Name>
 		<TriggerConditions>
-			<Stand condition="all">
-				<Action condition="equals">Idle</Stance>
-				<Key condition="single">P</Key>
-			</Stand>
-			<Jump condition="all">
-				<Action condition="equals">Idle</Stance>
-				<Key condition="single">P</Key>
-			</Jump>
-			<Crouch condition="all">
-				<Action condition="equals">Idle</Stance>
-				<Key condition="single">P</Key>
-			</Crouch>
-		</TriggerConditions>
-		<InterruptConditions>
-			<Stand condition="all">
-				<Action condition="equals">Struck</Action>
-			</Stand>
-			<Jump condition="all">
-				<Action condition="equals">Struck</Action>
-			</Jump>
-			<Crouch condition="all">
-				<Action condition="equals">Struck</Action>
-			</Crouch>
-		</InterruptConditions>
-		<InterruptActions>
-				<Stand condition="all">
-						
-				</Stand>
-				<Jump>Struck</Jump>
-
+			
+		</TriggerConditions>	
 		<FrameCounts>
 			<Stand>15</Stand>
 			<Jump>10</Jump>

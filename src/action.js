@@ -7,7 +7,7 @@ Action = (function() {
 
   function Action() {}
 
-  Action.frameCount;
+  Action.frameCounts;
 
   Action.selfHitboxes;
 
@@ -18,6 +18,10 @@ Action = (function() {
   Action.triggerConditions;
 
   Action.interruptConditions;
+
+  Action.interruptActions;
+
+  Action.endActions;
 
   Action.isHostile;
 
