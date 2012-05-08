@@ -15,19 +15,20 @@ Camera2D = (function() {
   }
 
   Camera2D.prototype.computeMVP = function(model) {
-    model.translate(this.tX, this.tY, 0);
-    model.rotate(this.rA, 0, 0, 1);
-    Matrix.multiplyMM(this.mvp, 0, this.vMatrix, 0, model, 0);
-    Matrix.multiplyMM(this.mvp, 0, this.pMatrix, 0, this.mvp, 0);
+    var tmod;
+    mat4.translate(model, [this.tX, this.tY, 0], this.mvp);
+    tmod = mat4.rotateZ(this.mvp, this.rA, this.mvp);
+    mat4.multiply(this.vMatrix, this.mvp, this.mvp);
+    mat4.multiply(this.pMatrix, this.mvp, this.mvp);
     return this.mvp;
   };
 
   Camera2D.prototype.lookAt = function(x, y) {
-    return Matrix.setLookAtM(this.vMatrix, 0, x, y, 3, x, y, 0, 0, 1, 0);
+    return mat4.lookAt([x, y, 3], [x, y, 0], [0, 1, 0], this.vMatrix);
   };
 
   Camera2D.prototype.setBounds = function(left, right, bottom, top, near, far) {
-    return Matrix.orthoM(this.pMatrix, 0, left, right, bottom, top, near, far);
+    return mat4.ortho(left, right, bottom, top, near, far, this.pMatrix);
   };
 
   Camera2D.prototype.setRotate = function(angle) {

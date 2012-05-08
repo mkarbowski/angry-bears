@@ -44,8 +44,8 @@ GLUtils = (function() {
     return gl.enableVertexAttribArray(this.activeShader.vertexHandle);
   };
 
-  GLUtils.prototype.useCamera = function(cam) {
-    return gl.uniformMatrix4fv(this.activeProgram.matrixHandle, 1, false, cam.getMVP(), 0);
+  GLUtils.prototype.useCamera = function(cam, model) {
+    return gl.uniformMatrix4fv(this.activeProgram.matrixHandle, 1, false, cam.computeMVP(model), 0);
   };
 
   GLUtils.prototype.useProgram = function(name) {
@@ -62,7 +62,7 @@ GLUtils = (function() {
   GLUtils.prototype.useTexture = function(texture) {
     if (texture.isLoaded()) {
       gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.bindTexture(gl.TEXTURE_2D, texture.getTexture());
       return gl.uniform1i(this.activeProgram.samplerHandle, 0);
     } else {
       return alert('Texture has not yet loaded');

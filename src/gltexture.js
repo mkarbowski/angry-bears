@@ -7,7 +7,7 @@ GlTexture = (function() {
 
   function GlTexture(imageFile) {
     var image, isLoaded, texture;
-    loaded = false;
+    isLoaded = false;
     texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, this.texture);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
@@ -16,14 +16,14 @@ GlTexture = (function() {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     image = new Image();
     image.onload = function() {
-      this.loaded = true;
+      this.isLoaded = true;
       gl.bindTexture(gl.TEXTURE_2D, this.texture);
       return gl.texImage2D(gl.TEXTURE_2D, 0, image, true);
     };
     image.src = imageFile;
     function secretTexture() { return texture; };
 
-    function secretLoaded() { return loaded; };
+    function secretLoaded() { return isLoaded; };
 
     this.isLoaded = function() {
       return secretLoaded();
