@@ -1,3 +1,5 @@
+gl = null
+
 class GLUtils
   
   constructor: ->
@@ -21,6 +23,13 @@ class GLUtils
   
   getUniform: (prog, attrib) ->
     gl.GetUniformLocation prog, attrib
+
+  initWebGL: (canvas) ->
+    try   
+      gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+    catch error
+
+    if (!gl) then alert 'Unable to initialize WebGL. Your browser may not support it.'
   
   setTextureBuffer: (buffer, offset, stride) ->
     gl.vertexAttribPointer @activeProgram.textureHandle, 2, gl.FLOAT, false, stride, offset
@@ -48,3 +57,5 @@ class GLUtils
       gl.uniform1i @activeProgram.samplerHandle, 0
     else
       alert 'Texture has not yet loaded'
+
+glUtils = new GLUtils()

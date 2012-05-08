@@ -1,30 +1,17 @@
 class Application
+  constructor: ->
+    @lastUpdate = 0
+    @interval = 0
+    @gameLoop = ->
+      if !e.running then clearInterval a.interval
+      timeDiff = new Date().getTime() - a.lastUpdate
+      a.lastUpdate = a.lastUpdate + timeDiff
+      e.update timeDiff
+      e.draw()
 
-  @game
-  @running
-  @lastUpdate
-  @updateCallback
+  run: ->
+    e.running = true
+    e.initialize()    
+    @interval = setInterval @gameLoop, 1000 / e.fps
 
-  init: ->
-    webGLStart()
-    @game = new Game()
-    @running = false
-    @lastUpdate = new Date().getTime()
-    document.onkeydown = @game.keyDown event
-
-  tick: ->
-    if !application.running then clearInterval application.updateCallback
-    thisUpdate = new Date().getTime()
-    timeDiff = thisUpdate - application.lastUpdate 
-    application.lastUpdate = thisUpdate
-    application.game.draw()
-    application.game.update timeDiff
-    document.getElementById('text').textContent = timeDiff
-
-  runGame: ->
-    @init()
-    @running = true
-    @updateCallback = setInterval @tick, 1000/60      
-    return null
-
-application = new Application()
+a = new Application()

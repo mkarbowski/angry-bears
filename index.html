@@ -2,6 +2,12 @@
   <head>
     <title>Angry Bears</title>
     <script type="text/javascript" src="src/glMatrix-0.9.5.min.js"></script>
+    <script type="text/javascript" src="src/glutils.js"></script>
+    <script type="text/javascript" src="src/glprogram.js"></script>
+    <script type="text/javascript" src="src/gltexture.js"></script>
+    <script type="text/javascript" src="src/camera2d.js"></script>
+    <script type="text/javascript" src="src/engine.js"></script>
+    <script type="text/javascript" src="src/application.js"></script>
 
     <script id="shader-fs" type="x-shader/x-fragment">  
       precision mediump float;
@@ -72,7 +78,7 @@
       }
     </style>
   </head>
-  <body onload="application.runGame()">
+  <body onload="a.run()">
     <div id="text">test</div>
     <canvas id="game_canvas"></canvas>
   </body>
