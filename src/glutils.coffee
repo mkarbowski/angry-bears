@@ -30,8 +30,8 @@ class GLUtils
     gl.vertexAttribPointer @activeShader.vertexHandle, 3, gl.FLOAT, false, stride, offset
     gl.enableVertexAttribArray @activeShader.vertexHandle
   
-  useCamera: (cam) ->
-    gl.uniformMatrix4fv @activeProgram.matrixHandle, 1, false, cam.getMVP(), 0
+  useCamera: (cam, model) ->
+    gl.uniformMatrix4fv @activeProgram.matrixHandle, 1, false, cam.computeMVP(model), 0
   
   useProgram: (name) ->
     shader = @programs['name']
@@ -44,7 +44,7 @@ class GLUtils
   useTexture: (texture) ->
     if texture.isLoaded() 
       gl.activeTexture gl.TEXTURE0
-      gl.bindTexture gl.TEXTURE_2D, texture
+      gl.bindTexture gl.TEXTURE_2D, texture.getTexture()
       gl.uniform1i @activeProgram.samplerHandle, 0
     else
       alert 'Texture has not yet loaded'
