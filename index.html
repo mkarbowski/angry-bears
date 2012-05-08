@@ -2,25 +2,33 @@
   <head>
     <title>Angry Bears</title>
     <script type="text/javascript" src="src/glMatrix-0.9.5.min.js"></script>
-    <script type="text/javascript" src="src/gl.js"></script>
-    <script type="text/javascript" src="src/stagebackground.js"></script>
-    <script type="text/javascript" src="src/game.js"></script>
-    <script type="text/javascript" src="src/application.js"></script>  
 
     <script id="shader-fs" type="x-shader/x-fragment">  
       precision mediump float;
 
-      void main() {
-         gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+      uniform sampler2D mTexture0;
+      varying vec2 texcoord;
+
+      void main()
+      {
+        gl_FragColor = texture2D(mTexture0, texcoord);
       }
     </script>  
 
     <script id="shader-vs" type="x-shader/x-vertex">  
-      attribute vec3 a_position;
-      
-      void main() {
-         gl_Position = vec4(a_position, 1.0);
-      } 
+      attribute vec3 vertPos;
+      attribute vec2 vertTexcoord0;
+
+      uniform mat4 matProjViewModel;
+      uniform mat4 matTex;
+
+      varying vec2 texcoord;
+
+      void main()
+      {
+        texcoord = (matTex*vec4(vertTexcoord0, 1.0, 1.0)).xy;
+        gl_Position = matProjViewModel*vec4(vertPos, 1.0);
+      }
     </script> 
 
     <style type="text/css">
