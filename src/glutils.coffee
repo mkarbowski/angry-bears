@@ -6,12 +6,27 @@ class GLUtils
     @programs = new Object()
     @activeProgram = null
   
-  addShader: (name, program) ->
-    if programs['name'] == null 
-      programs['name'] = program
+  addProgram: (name, program) ->
+    if @programs['name']?
+      alert 'Program named: \'{# name}\' already loaded'
     else
-      alert 'Program named: \'{# name}\' already loaded' 
-  
+      @programs['name'] = program
+
+  loadShader: (type, code) ->
+    shader = gl.createShader type    
+    gl.shaderSource shader, code
+    gl.compileShader shader    
+    shader
+
+  createProgram: (vScript, fScript) ->
+    prog = gl.createProgram()    
+    vertexShader = @loadShader gl.VERTEX_SHADER, vScript
+    fragmentShader = @loadShader gl.FRAGMENT_SHADER, fScript    
+    gl.attachShader prog, vertexShader
+    gl.attachShader prog, fragmentShader
+    gl.linkProgram prog    
+    prog
+
   deleteProgram: (prog) ->
     gl.deleteProgram prog
   
@@ -22,30 +37,29 @@ class GLUtils
     gl.getAttribLocation prog, attrib
   
   getUniform: (prog, attrib) ->
-    gl.GetUniformLocation prog, attrib
+    gl.getUniformLocation prog, attrib
 
   initWebGL: (canvas) ->
     try   
       gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
     catch error
-
     if (!gl) then alert 'Unable to initialize WebGL. Your browser may not support it.'
-  
+
   setTextureBuffer: (buffer, offset, stride) ->
-    gl.vertexAttribPointer @activeProgram.textureHandle, 2, gl.FLOAT, false, stride, offset
     gl.enableVertexAttribArray @activeProgram.textureHandle
+    gl.vertexAttribPointer @activeProgram.textureHandle, 2, gl.FLOAT, false, stride, offset    
   
   setVertexBuffer: (buffer, offset, stride) ->
-    gl.vertexAttribPointer @activeShader.vertexHandle, 3, gl.FLOAT, false, stride, offset
-    gl.enableVertexAttribArray @activeShader.vertexHandle
-  
+    gl.enableVertexAttribArray @activeProgram.vertexHandle
+    gl.vertexAttribPointer @activeProgram.vertexHandle, 3, gl.FLOAT, false, stride, offset
+      
   useCamera: (cam, model) ->
-    gl.uniformMatrix4fv @activeProgram.matrixHandle, 1, false, cam.computeMVP(model), 0
+    gl.uniformMatrix4fv @activeProgram.matrixHandle, false, cam.computeMVP(model)
   
   useProgram: (name) ->
-    shader = @programs['name']
-    if shader? 
-      @activeShader = @programs['name']
+    program = @programs['name']
+    if program? 
+      @activeProgram = @programs['name']
       gl.useProgram @activeProgram.program
     else
       alert 'Program: \'{# name}\' does not exist'

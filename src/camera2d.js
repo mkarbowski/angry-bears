@@ -15,9 +15,8 @@ Camera2D = (function() {
   }
 
   Camera2D.prototype.computeMVP = function(model) {
-    var tmod;
     mat4.translate(model, [this.tX, this.tY, 0], this.mvp);
-    tmod = mat4.rotateZ(this.mvp, this.rA, this.mvp);
+    mat4.rotateZ(this.mvp, this.rA, this.mvp);
     mat4.multiply(this.vMatrix, this.mvp, this.mvp);
     mat4.multiply(this.pMatrix, this.mvp, this.mvp);
     return this.mvp;
@@ -28,7 +27,7 @@ Camera2D = (function() {
   };
 
   Camera2D.prototype.setBounds = function(left, right, bottom, top, near, far) {
-    return mat4.ortho(left, right, bottom, top, near, far, this.pMatrix);
+    return mat4.ortho(left, right, bottom, top, 3, 7, this.pMatrix);
   };
 
   Camera2D.prototype.setRotate = function(angle) {

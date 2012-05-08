@@ -10,15 +10,17 @@ Engine = (function() {
     this.initialized = false;
     this.running = false;
     this.worldCam = null;
+    this.triangle = null;
     this.basicProgram = 'basic';
   }
 
   Engine.prototype.draw = function() {
-    return gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    return this.triangle.draw(this.worldCam);
   };
 
   Engine.prototype.initialize = function() {
-    var canvas;
+    var canvas, fScript, vScript;
     canvas = document.getElementById('game_canvas');
     glUtils.initWebGL(canvas);
     if ((typeof gl !== "undefined" && gl !== null)) {
@@ -28,13 +30,16 @@ Engine = (function() {
       gl.depthFunc(gl.LEQUAL);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     } else {
-      this.running = false;
+      return this.running = false;
     }
+    fScript = document.getElementById('shader-fs').textContent;
+    vScript = document.getElementById('shader-vs').textContent;
+    glUtils.addProgram(this.basicProgram, new GLProgram(vScript, fScript));
+    glUtils.useProgram(this.basicProgram);
     this.worldCam = new Camera2D();
     this.worldCam.lookAt(0, 0);
-    this.worldCam.setBounds(-1, 1, -1, 1, 4, 0);
-    this.worldCam.setRotate(0);
-    this.worldCam.setTranslate(0, 0);
+    this.worldCam.setBounds(-1, 1, -1, 1);
+    this.triangle = new TriangleTest();
     return this.initialized = true;
   };
 

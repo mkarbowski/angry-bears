@@ -12,12 +12,31 @@ GLUtils = (function() {
     this.activeProgram = null;
   }
 
-  GLUtils.prototype.addShader = function(name, program) {
-    if (programs['name'] === null) {
-      return programs['name'] = program;
-    } else {
+  GLUtils.prototype.addProgram = function(name, program) {
+    if (this.programs['name'] != null) {
       return alert('Program named: \'{# name}\' already loaded');
+    } else {
+      return this.programs['name'] = program;
     }
+  };
+
+  GLUtils.prototype.loadShader = function(type, code) {
+    var shader;
+    shader = gl.createShader(type);
+    gl.shaderSource(shader, code);
+    gl.compileShader(shader);
+    return shader;
+  };
+
+  GLUtils.prototype.createProgram = function(vScript, fScript) {
+    var fragmentShader, prog, vertexShader;
+    prog = gl.createProgram();
+    vertexShader = this.loadShader(gl.VERTEX_SHADER, vScript);
+    fragmentShader = this.loadShader(gl.FRAGMENT_SHADER, fScript);
+    gl.attachShader(prog, vertexShader);
+    gl.attachShader(prog, fragmentShader);
+    gl.linkProgram(prog);
+    return prog;
   };
 
   GLUtils.prototype.deleteProgram = function(prog) {
@@ -33,7 +52,7 @@ GLUtils = (function() {
   };
 
   GLUtils.prototype.getUniform = function(prog, attrib) {
-    return gl.GetUniformLocation(prog, attrib);
+    return gl.getUniformLocation(prog, attrib);
   };
 
   GLUtils.prototype.initWebGL = function(canvas) {
@@ -48,24 +67,24 @@ GLUtils = (function() {
   };
 
   GLUtils.prototype.setTextureBuffer = function(buffer, offset, stride) {
-    gl.vertexAttribPointer(this.activeProgram.textureHandle, 2, gl.FLOAT, false, stride, offset);
-    return gl.enableVertexAttribArray(this.activeProgram.textureHandle);
+    gl.enableVertexAttribArray(this.activeProgram.textureHandle);
+    return gl.vertexAttribPointer(this.activeProgram.textureHandle, 2, gl.FLOAT, false, stride, offset);
   };
 
   GLUtils.prototype.setVertexBuffer = function(buffer, offset, stride) {
-    gl.vertexAttribPointer(this.activeShader.vertexHandle, 3, gl.FLOAT, false, stride, offset);
-    return gl.enableVertexAttribArray(this.activeShader.vertexHandle);
+    gl.enableVertexAttribArray(this.activeProgram.vertexHandle);
+    return gl.vertexAttribPointer(this.activeProgram.vertexHandle, 3, gl.FLOAT, false, stride, offset);
   };
 
   GLUtils.prototype.useCamera = function(cam, model) {
-    return gl.uniformMatrix4fv(this.activeProgram.matrixHandle, 1, false, cam.computeMVP(model), 0);
+    return gl.uniformMatrix4fv(this.activeProgram.matrixHandle, false, cam.computeMVP(model));
   };
 
   GLUtils.prototype.useProgram = function(name) {
-    var shader;
-    shader = this.programs['name'];
-    if (shader != null) {
-      this.activeShader = this.programs['name'];
+    var program;
+    program = this.programs['name'];
+    if (program != null) {
+      this.activeProgram = this.programs['name'];
       return gl.useProgram(this.activeProgram.program);
     } else {
       return alert('Program: \'{# name}\' does not exist');

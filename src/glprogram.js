@@ -9,10 +9,10 @@ GLProgram = (function() {
     this.vScript = vScript;
     this.fScript = fScript;
     this.program = glUtils.createProgram(vScript, fScript);
-    this.matrixHandle = glUtils.getUniform(program, "uMVPMatrix");
-    this.samplerHandle = glUtils.getUniform(program, "uSampler2D");
-    this.textureHandle = glUtils.getAttrib(program, "aTexCoord");
-    this.vertexHandle = glUtils.getAttrib(program, "aVertCoord");
+    this.matrixHandle = glUtils.getUniform(this.program, "uMVPMatrix");
+    this.samplerHandle = glUtils.getUniform(this.program, "uSampler2D");
+    this.textureHandle = glUtils.getAttrib(this.program, "aTexCoord");
+    this.vertexHandle = glUtils.getAttrib(this.program, "aVertCoord");
   }
 
   GLProgram.prototype["delete"] = function() {

@@ -9,7 +9,7 @@ class Camera2D
   
   computeMVP: (model) ->
     mat4.translate model, [@tX, @tY, 0], @mvp
-    tmod = mat4.rotateZ @mvp, @rA, @mvp
+    mat4.rotateZ @mvp, @rA, @mvp
     mat4.multiply @vMatrix, @mvp, @mvp
     mat4.multiply @pMatrix, @mvp, @mvp
     @mvp
@@ -18,7 +18,7 @@ class Camera2D
     mat4.lookAt [x, y, 3], [x, y, 0], [0, 1, 0], @vMatrix
   
   setBounds: (left, right, bottom, top, near, far) ->
-    mat4.ortho left, right, bottom, top, near, far, @pMatrix
+    mat4.ortho left, right, bottom, top, 3, 7, @pMatrix
   
   setRotate: (angle) ->
     @rA = angle

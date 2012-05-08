@@ -2,38 +2,33 @@
   <head>
     <title>Angry Bears</title>
     <script type="text/javascript" src="src/glMatrix-0.9.5.min.js"></script>
-    <script type="text/javascript" src="src/glutils.js"></script>
     <script type="text/javascript" src="src/glprogram.js"></script>
     <script type="text/javascript" src="src/gltexture.js"></script>
+    <script type="text/javascript" src="src/glutils.js"></script>
     <script type="text/javascript" src="src/camera2d.js"></script>
     <script type="text/javascript" src="src/engine.js"></script>
     <script type="text/javascript" src="src/application.js"></script>
+    <script type="text/javascript" src="src/triangletest.js"></script>
 
     <script id="shader-fs" type="x-shader/x-fragment">  
       precision mediump float;
-
-      uniform sampler2D mTexture0;
-      varying vec2 texcoord;
-
+      varying vec2 v_texCoord;
+      uniform sampler2D uSampler2D;
       void main()
       {
-        gl_FragColor = texture2D(mTexture0, texcoord);
+         gl_FragColor = texture2D(uSampler2D, v_texCoord);
       }
     </script>  
 
     <script id="shader-vs" type="x-shader/x-vertex">  
-      attribute vec3 vertPos;
-      attribute vec2 vertTexcoord0;
-
-      uniform mat4 matProjViewModel;
-      uniform mat4 matTex;
-
-      varying vec2 texcoord;
-
+      uniform mat4 uMVPMatrix;
+      attribute vec4 aVertCoord;
+      attribute vec2 aTexCoord;
+      varying vec2 v_texCoord;
       void main()
       {
-        texcoord = (matTex*vec4(vertTexcoord0, 1.0, 1.0)).xy;
-        gl_Position = matProjViewModel*vec4(vertPos, 1.0);
+         v_texCoord = aTexCoord;
+         gl_Position = uMVPMatrix * aVertCoord;
       }
     </script> 
 

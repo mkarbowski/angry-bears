@@ -1,7 +1,7 @@
-class GlTexture
+class GLTexture
 
   constructor: (imageFile) ->
-    isLoaded = false
+    loaded = false
     
     texture = gl.createTexture()
     gl.bindTexture gl.TEXTURE_2D, @texture
@@ -12,15 +12,15 @@ class GlTexture
     
     image = new Image()
     image.onload = ->
-      @isLoaded = true
+      loaded = true
       gl.bindTexture gl.TEXTURE_2D, @texture
-      gl.texImage2D gl.TEXTURE_2D, 0, image, true      
+      gl.texImage2D gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image  
 
     image.src = imageFile
 
     `function secretTexture() { return texture; }`
 
-    `function secretLoaded() { return isLoaded; }`
+    `function secretLoaded() { return loaded; }`
 
     @isLoaded = -> 
       secretLoaded()
