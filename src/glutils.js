@@ -67,17 +67,26 @@ GLUtils = (function() {
   };
 
   GLUtils.prototype.setTextureBuffer = function(buffer, offset, stride) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.enableVertexAttribArray(this.activeProgram.textureHandle);
     return gl.vertexAttribPointer(this.activeProgram.textureHandle, 2, gl.FLOAT, false, stride, offset);
   };
 
   GLUtils.prototype.setVertexBuffer = function(buffer, offset, stride) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.enableVertexAttribArray(this.activeProgram.vertexHandle);
     return gl.vertexAttribPointer(this.activeProgram.vertexHandle, 3, gl.FLOAT, false, stride, offset);
   };
 
   GLUtils.prototype.useCamera = function(cam, model) {
-    return gl.uniformMatrix4fv(this.activeProgram.matrixHandle, false, cam.computeMVP(model));
+    var mat = cam.computeMVP(model);
+    mat = [
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1,
+    ];
+    return gl.uniformMatrix4fv(this.activeProgram.matrixHandle, false, mat);
   };
 
   GLUtils.prototype.useProgram = function(name) {
@@ -92,13 +101,9 @@ GLUtils = (function() {
   };
 
   GLUtils.prototype.useTexture = function(texture) {
-    if (texture.isLoaded()) {
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, texture.getTexture());
-      return gl.uniform1i(this.activeProgram.samplerHandle, 0);
-    } else {
-      return alert('Texture has not yet loaded');
-    }
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, texture.texture);
+    return gl.uniform1i(this.activeProgram.samplerHandle, 0);
   };
 
   return GLUtils;

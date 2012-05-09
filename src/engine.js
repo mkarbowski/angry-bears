@@ -15,6 +15,7 @@ Engine = (function() {
   }
 
   Engine.prototype.draw = function() {
+    gl.clearColor(0.0, 0.0, Math.random(), 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     return this.triangle.draw(this.worldCam);
   };
@@ -23,6 +24,9 @@ Engine = (function() {
     var canvas, fScript, vScript;
     canvas = document.getElementById('game_canvas');
     glUtils.initWebGL(canvas);
+    gl = WebGLDebugUtils.makeDebugContext(gl, function(err, funcName, args) {
+      throw WebGLDebugUtils.glEnumToString(err) + ": " + funcName;
+    });
     if ((typeof gl !== "undefined" && gl !== null)) {
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.clearColor(0.0, 0.0, 0.0, 1.0);

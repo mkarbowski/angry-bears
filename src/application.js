@@ -7,23 +7,26 @@ Application = (function() {
 
   function Application() {
     this.lastUpdate = 0;
-    this.interval = 0;
+    this.request = undefined;
+    var that = this;
     this.gameLoop = function() {
       var timeDiff;
       if (!e.running) {
-        clearInterval(a.interval);
+        cancelAnimFrame(a.request);
       }
-      timeDiff = new Date().getTime() - a.lastUpdate;
-      a.lastUpdate = a.lastUpdate + timeDiff;
+      timeDiff = new Date().getTime() - that.lastUpdate;
+      that.lastUpdate = that.lastUpdate + timeDiff;
       e.update(timeDiff);
-      return e.draw();
+      e.draw();
+      that.request = requestAnimFrame(that.gameLoop /*, should also pass canvas here */);
     };
+
   }
 
   Application.prototype.run = function() {
     e.running = true;
     e.initialize();
-    return this.interval = setInterval(this.gameLoop, 1000 / e.fps);
+    this.gameLoop();
   };
 
   return Application;
