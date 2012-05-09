@@ -79,14 +79,7 @@ GLUtils = (function() {
   };
 
   GLUtils.prototype.useCamera = function(cam, model) {
-    var mat = cam.computeMVP(model);
-    mat = [
-      1, 0, 0, 0,
-      0, 1, 0, 0,
-      0, 0, 1, 0,
-      0, 0, 0, 1,
-    ];
-    return gl.uniformMatrix4fv(this.activeProgram.matrixHandle, false, mat);
+    return gl.uniformMatrix4fv(this.activeProgram.matrixHandle, false, cam.computeMVP(model));
   };
 
   GLUtils.prototype.useProgram = function(name) {
@@ -101,8 +94,10 @@ GLUtils = (function() {
   };
 
   GLUtils.prototype.useTexture = function(texture) {
+    var got;
     gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texture.texture);
+    got = texture.texture;
+    gl.bindTexture(gl.TEXTURE_2D, got);
     return gl.uniform1i(this.activeProgram.samplerHandle, 0);
   };
 

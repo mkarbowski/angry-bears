@@ -6,9 +6,10 @@ Application = (function() {
   Application.name = 'Application';
 
   function Application() {
+    var that;
     this.lastUpdate = 0;
-    this.request = undefined;
-    var that = this;
+    this.request = void 0;
+    that = this;
     this.gameLoop = function() {
       var timeDiff;
       if (!e.running) {
@@ -18,15 +19,14 @@ Application = (function() {
       that.lastUpdate = that.lastUpdate + timeDiff;
       e.update(timeDiff);
       e.draw();
-      that.request = requestAnimFrame(that.gameLoop /*, should also pass canvas here */);
+      return that.request = requestAnimFrame(that.gameLoop);
     };
-
   }
 
   Application.prototype.run = function() {
     e.running = true;
     e.initialize();
-    this.gameLoop();
+    return this.gameLoop();
   };
 
   return Application;

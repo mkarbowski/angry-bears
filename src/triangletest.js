@@ -11,14 +11,12 @@ TriangleTest = (function() {
     this.texture = new GLTexture('resources/red.png');
     this.model = mat4.create();
     mat4.identity(this.model);
-
-    this.vertBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, this.vertCoords, gl.STATIC_DRAW);
-
     this.texBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.texBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, this.texCoords, gl.STATIC_DRAW);
+    this.vertBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, this.vertCoords, gl.STATIC_DRAW);
   }
 
   TriangleTest.prototype.draw = function(camera) {
