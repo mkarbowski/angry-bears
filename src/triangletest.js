@@ -6,25 +6,26 @@ TriangleTest = (function() {
   TriangleTest.name = 'TriangleTest';
 
   function TriangleTest() {
-    this.vertCoords = new Float32Array([0, 0, 4, 1, 1, 4, 0, 1, 4]);
+    this.vertCoords = new Float32Array([0, 0, 0, 1, 1, 0, 0, 1, 0]);
     this.texCoords = new Float32Array([0, 0, 1, 1, 0, 1]);
     this.texture = new GLTexture('resources/red.png');
     this.model = mat4.create();
     mat4.identity(this.model);
+
+    this.vertBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, this.vertCoords, gl.STATIC_DRAW);
+
+    this.texBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.texBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, this.texCoords, gl.STATIC_DRAW);
   }
 
   TriangleTest.prototype.draw = function(camera) {
-    var texBuffer, vertBuffer;
     glUtils.useTexture(this.texture);
     glUtils.useCamera(camera, this.model);
-    vertBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, this.vertCoords, gl.STATIC_DRAW);
-    glUtils.setVertexBuffer(vertBuffer, 0, 0);
-    texBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, texBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, this.texCoords, gl.STATIC_DRAW);
-    glUtils.setTextureBuffer(texBuffer, 0, 0);
+    glUtils.setVertexBuffer(this.vertBuffer, 0, 0);
+    glUtils.setTextureBuffer(this.texBuffer, 0, 0);
     return gl.drawArrays(gl.TRIANGLES, 0, 3);
   };
 
