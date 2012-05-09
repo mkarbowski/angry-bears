@@ -1,17 +1,19 @@
 class Application
   constructor: ->
     @lastUpdate = 0
-    @interval = 0
+    @request = undefined
+    that = this
     @gameLoop = ->
-      if !e.running then clearInterval a.interval
-      timeDiff = new Date().getTime() - a.lastUpdate
-      a.lastUpdate = a.lastUpdate + timeDiff
+      if !e.running then cancelAnimFrame a.request
+      timeDiff = new Date().getTime() - that.lastUpdate
+      that.lastUpdate = that.lastUpdate + timeDiff
       e.update timeDiff
       e.draw()
+      that.request = requestAnimFrame that.gameLoop
 
   run: ->
     e.running = true
     e.initialize()    
-    @interval = setInterval @gameLoop, 1000 / e.fps
+    @gameLoop()
 
 a = new Application()

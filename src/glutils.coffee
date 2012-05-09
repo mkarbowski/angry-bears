@@ -46,10 +46,12 @@ class GLUtils
     if (!gl) then alert 'Unable to initialize WebGL. Your browser may not support it.'
 
   setTextureBuffer: (buffer, offset, stride) ->
+    gl.bindBuffer gl.ARRAY_BUFFER, buffer
     gl.enableVertexAttribArray @activeProgram.textureHandle
     gl.vertexAttribPointer @activeProgram.textureHandle, 2, gl.FLOAT, false, stride, offset    
   
   setVertexBuffer: (buffer, offset, stride) ->
+    gl.bindBuffer gl.ARRAY_BUFFER, buffer
     gl.enableVertexAttribArray @activeProgram.vertexHandle
     gl.vertexAttribPointer @activeProgram.vertexHandle, 3, gl.FLOAT, false, stride, offset
       
@@ -65,11 +67,9 @@ class GLUtils
       alert 'Program: \'{# name}\' does not exist'
   
   useTexture: (texture) ->
-    if texture.isLoaded() 
       gl.activeTexture gl.TEXTURE0
-      gl.bindTexture gl.TEXTURE_2D, texture.getTexture()
+      got = texture.texture
+      gl.bindTexture gl.TEXTURE_2D, got
       gl.uniform1i @activeProgram.samplerHandle, 0
-    else
-      alert 'Texture has not yet loaded'
 
 glUtils = new GLUtils()
