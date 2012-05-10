@@ -6,31 +6,29 @@ Background = (function() {
   Background.name = 'Background';
 
   function Background(file) {
-    var that;
+    var dom, that;
     this.loaded = false;
     this.sprite = null;
     this.xmlHttp = new XMLHttpRequest();
     that = this;
-    this.xmlHttp.onreadystatechanged = function() {
-      var dom;
-      dom = that.xmlHttp.requestXml;
-      that.sprite = new Sprite(dom.getElementsByTagName('Sprite')[0]);
-      that.loaded = true;
-      return alert('lol');
-    };
     this.xmlHttp.open('GET', file, false);
     this.xmlHttp.send();
+    dom = this.xmlHttp.responseXML;
+    this.sprite = new Sprite(dom.getElementsByTagName('Sprite')[0]);
+    this.loaded = true;
     this.model = mat4.create();
     mat4.identity(this.model);
   }
 
   Background.prototype.draw = function(camera) {
-    if ((this.sprite != null) && this.sprite.loaded) {
+    if (this.sprite != null) {
       return this.sprite.draw(camera, this.model);
     }
   };
 
   Background.prototype.load = function() {
+    this.sprite.load();
+    this.sprite.setAnimation('background_sample');
     return null;
   };
 

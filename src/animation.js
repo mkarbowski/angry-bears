@@ -10,7 +10,7 @@ Animation = (function() {
     this.frameCount = frameCount;
     this.frameRemainder = 0;
     this.resources = resources;
-    this.textures = void 0;
+    this.textures = [];
     this.loaded = false;
   }
 

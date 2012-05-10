@@ -4,7 +4,7 @@ class Animation
     @frameCount = frameCount
     @frameRemainder = 0
     @resources = resources
-    @textures = undefined
+    @textures = []
     @loaded = false
 
   consumeTime: (elapsed) ->

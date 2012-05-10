@@ -4,22 +4,21 @@ class Background
     @sprite = null
     @xmlHttp = new XMLHttpRequest()
     that = this    
-    @xmlHttp.onreadystatechanged = ->
-      dom = that.xmlHttp.requestXml
-      that.sprite = new Sprite dom.getElementsByTagName('Sprite')[0]
-      that.loaded = true
-      alert 'lol'
     @xmlHttp.open 'GET', file, false
     @xmlHttp.send()
+    dom = @xmlHttp.responseXML
+    @sprite = new Sprite dom.getElementsByTagName('Sprite')[0]
+    @loaded = true
     @model = mat4.create()
     mat4.identity @model
 
   draw: (camera) ->
-    if @sprite? and @sprite.loaded
+    if @sprite?
       @sprite.draw camera, @model
 
   load: ->
-    #@sprite.load()
+    @sprite.load()
+    @sprite.setAnimation 'background_sample'
     return null
 
   unload: ->

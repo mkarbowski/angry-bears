@@ -1,59 +1,71 @@
 class Sprite
   constructor: (spriteXML) ->
-    @animations = undefined
-    @mesh = undefined
-    @currentAnimation = undefined
+    @animations = new Object()
+    @mesh = null
+    @currentAnimation = null
 
-    vertTag = spriteXML.childNodes[0]
+    vertTag = spriteXML.childNodes[1]
     vertCoords = vertTag.childNodes
     
-    texTag = sprite.childNodes[1]
+    texTag = spriteXML.childNodes[3]
     texCoords = texTag.childNodes
     
     vert = []
     tex = []
 
     for coord in vertCoords
-      sArr = coord.innerText.split ','
-      vert.push parseInt sArr[0]
-      vert.push parseInt sArr[1]
-      vert.push parseInt sArr[2]
+      if coord.localName == 'Coord'
+        sArr = coord.firstChild.data.split ','
+        vert.push parseInt sArr[0]
+        vert.push parseInt sArr[1]
+        vert.push parseInt sArr[2]
+    vert = new Float32Array vert
 
     for coord in texCoords
-      sArr = coord.innerText.split ','
-      tex.push parseInt sArr[0]
-      tex.push parseInt sArr[1]
+      if coord.localName == 'Coord'
+        sArr = coord.firstChild.data.split ','
+        tex.push parseInt sArr[0]
+        tex.push parseInt sArr[1]
+    tex = new Float32Array tex
 
     @mesh = new Mesh vert, tex
 
-    animTag = dom.getElementsByTagName('Animations')[0]
+    animTag = spriteXML.childNodes[5]
     anims = animTag.childNodes
     for anim in anims
-      name = anim.childNodes[0].innerText
-      frameCount = parseInt anim.childNodes[1].innerText
-      resources = []
-      for file in anim.childNodes[2].childNodes
-        resources.push file.innerText
-      @animations[name] = new Animation frameCount, resources    
+      if anim.localName == 'Animation'
+        name = anim.childNodes[1].firstChild.data
+        frameCount = parseInt anim.childNodes[3].firstChild.data
+        resources = []
+        for file in anim.childNodes[5].childNodes
+          if file.localName == 'File'
+            resources.push file.firstChild.data
+        @animations[name] = new Animation frameCount, resources    
     return null
 
   setAnimation: (name) ->
-    @currentAnimation.reset()
+    if @currentAnimation?
+      @currentAnimation.reset()
     @currentAnimation = @animations[name]
 
   draw: (camera, model) ->
     glUtils.useCamera camera, model
     glUtils.useTexture @currentAnimation.texture()
-    glUtils.setTextureBuffer @mesh.textureBuffer, 0, 0
-    glUtils.setVertexBuffer @mesh.vertexBuffer, 0, 0
+    glUtils.setTextureBuffer @mesh.texBuffer, 0, 0
+    glUtils.setVertexBuffer @mesh.vertBuffer, 0, 0
     gl.drawArrays gl.TRIANGLES, 0, @mesh.size
 
   load: ->
     @mesh.load()
-    for prop in @animations
-      if @animations.hasOwnProperty prop and prop is GLTexture then prop.load()
+    `for (var prop in this.animations) {
+      if (this.animations.hasOwnProperty(prop)) {
+        this.animations[prop].load();
+      }
+    }`
+    return null
 
   unload: ->
     @mesh.unload()
     for prop in @animations
       if @animations.hasOwnProperty prop and prop is GLTexture then prop.unload()
+    return null

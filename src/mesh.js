@@ -6,8 +6,8 @@ Mesh = (function() {
   Mesh.name = 'Mesh';
 
   function Mesh(vert, tex) {
-    this.size = vert.length;
-    this.vertexCoords = vert;
+    this.size = vert.length / 3;
+    this.vertCoords = vert;
     this.texCoords = tex;
     this.vertBuffer = null;
     this.texBuffer = null;

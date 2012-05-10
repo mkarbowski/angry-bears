@@ -1,7 +1,7 @@
 class Mesh
   constructor: (vert, tex) ->
-    @size = vert.length
-    @vertexCoords = vert
+    @size = vert.length / 3
+    @vertCoords = vert
     @texCoords = tex
     @vertBuffer = null
     @texBuffer = null

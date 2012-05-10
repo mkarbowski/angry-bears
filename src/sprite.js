@@ -7,89 +7,93 @@ Sprite = (function() {
 
   function Sprite(spriteXML) {
     var anim, animTag, anims, coord, file, frameCount, name, resources, sArr, tex, texCoords, texTag, vert, vertCoords, vertTag, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref;
-    this.animations = void 0;
-    this.mesh = void 0;
-    this.currentAnimation = void 0;
-    vertTag = spriteXML.childNodes[0];
+    this.animations = new Object();
+    this.mesh = null;
+    this.currentAnimation = null;
+    vertTag = spriteXML.childNodes[1];
     vertCoords = vertTag.childNodes;
-    texTag = sprite.childNodes[1];
+    texTag = spriteXML.childNodes[3];
     texCoords = texTag.childNodes;
     vert = [];
     tex = [];
     for (_i = 0, _len = vertCoords.length; _i < _len; _i++) {
       coord = vertCoords[_i];
-      sArr = coord.innerText.split(',');
-      vert.push(parseInt(sArr[0]));
-      vert.push(parseInt(sArr[1]));
-      vert.push(parseInt(sArr[2]));
+      if (coord.localName === 'Coord') {
+        sArr = coord.firstChild.data.split(',');
+        vert.push(parseInt(sArr[0]));
+        vert.push(parseInt(sArr[1]));
+        vert.push(parseInt(sArr[2]));
+      }
     }
+    vert = new Float32Array(vert);
     for (_j = 0, _len1 = texCoords.length; _j < _len1; _j++) {
       coord = texCoords[_j];
-      sArr = coord.innerText.split(',');
-      tex.push(parseInt(sArr[0]));
-      tex.push(parseInt(sArr[1]));
+      if (coord.localName === 'Coord') {
+        sArr = coord.firstChild.data.split(',');
+        tex.push(parseInt(sArr[0]));
+        tex.push(parseInt(sArr[1]));
+      }
     }
+    tex = new Float32Array(tex);
     this.mesh = new Mesh(vert, tex);
-    animTag = dom.getElementsByTagName('Animations')[0];
+    animTag = spriteXML.childNodes[5];
     anims = animTag.childNodes;
     for (_k = 0, _len2 = anims.length; _k < _len2; _k++) {
       anim = anims[_k];
-      name = anim.childNodes[0].innerText;
-      frameCount = parseInt(anim.childNodes[1].innerText);
-      resources = [];
-      _ref = anim.childNodes[2].childNodes;
-      for (_l = 0, _len3 = _ref.length; _l < _len3; _l++) {
-        file = _ref[_l];
-        resources.push(file.innerText);
+      if (anim.localName === 'Animation') {
+        name = anim.childNodes[1].firstChild.data;
+        frameCount = parseInt(anim.childNodes[3].firstChild.data);
+        resources = [];
+        _ref = anim.childNodes[5].childNodes;
+        for (_l = 0, _len3 = _ref.length; _l < _len3; _l++) {
+          file = _ref[_l];
+          if (file.localName === 'File') {
+            resources.push(file.firstChild.data);
+          }
+        }
+        this.animations[name] = new Animation(frameCount, resources);
       }
-      this.animations[name] = new Animation(frameCount, resources);
     }
     return null;
   }
 
   Sprite.prototype.setAnimation = function(name) {
-    this.currentAnimation.reset();
+    if (this.currentAnimation != null) {
+      this.currentAnimation.reset();
+    }
     return this.currentAnimation = this.animations[name];
   };
 
   Sprite.prototype.draw = function(camera, model) {
     glUtils.useCamera(camera, model);
     glUtils.useTexture(this.currentAnimation.texture());
-    glUtils.setTextureBuffer(this.mesh.textureBuffer, 0, 0);
-    glUtils.setVertexBuffer(this.mesh.vertexBuffer, 0, 0);
+    glUtils.setTextureBuffer(this.mesh.texBuffer, 0, 0);
+    glUtils.setVertexBuffer(this.mesh.vertBuffer, 0, 0);
     return gl.drawArrays(gl.TRIANGLES, 0, this.mesh.size);
   };
 
   Sprite.prototype.load = function() {
-    var prop, _i, _len, _ref, _results;
     this.mesh.load();
-    _ref = this.animations;
-    _results = [];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      prop = _ref[_i];
-      if (this.animations.hasOwnProperty(prop && prop === GLTexture)) {
-        _results.push(prop.load());
-      } else {
-        _results.push(void 0);
+    for (var prop in this.animations) {
+      if (this.animations.hasOwnProperty(prop)) {
+        this.animations[prop].load();
       }
-    }
-    return _results;
+    };
+
+    return null;
   };
 
   Sprite.prototype.unload = function() {
-    var prop, _i, _len, _ref, _results;
+    var prop, _i, _len, _ref;
     this.mesh.unload();
     _ref = this.animations;
-    _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       prop = _ref[_i];
       if (this.animations.hasOwnProperty(prop && prop === GLTexture)) {
-        _results.push(prop.unload());
-      } else {
-        _results.push(void 0);
+        prop.unload();
       }
     }
-    return _results;
+    return null;
   };
 
   return Sprite;
