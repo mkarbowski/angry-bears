@@ -1,0 +1,28 @@
+Should create primitive type 'skeletons' whos GL members can be loaded or unloaded when necessary
+
+Sprite
+  mat4 model
+  Mesh mesh
+  Map<string, Animation> animations
+  bool isLoaded
+  method consumeTime(int time)
+  void load()
+  void unload()
+
+Mesh
+  Float32Array vertexCoords
+  Float32Array textureCoords
+  bool isLoaded
+  void load()
+  void unload()
+
+Animation
+  int frameCount
+  //the leftovers from last consume to be added to next
+  int frameRemainder
+  WebGLTexture[] textures
+  string[] resources
+  bool isLoaded
+  void consumeTime(int time)
+  void load()
+  void unload()

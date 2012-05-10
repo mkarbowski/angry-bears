@@ -1,8 +1,8 @@
-class TriangleTest
-  constructor: ->
-    @vertCoords = new Float32Array([0,0,0,1,1,0,0,1,0])
-    @texCoords = new Float32Array([0,0,1,1,0,1])
-    @texture = new GLTexture 'resources/red.png'
+class StageBackground
+  constructor: (filename) ->
+    @vertCoords = new Float32Array([-1,-1,0,-1,1,0,1,1,0,-1,-1,0,1,1,0,1-1,0])
+    @texCoords = new Float32Array([0,0,0,1,1,1,0,0,1,1,1,0])
+    @texture = new GLTexture filename
     @model = mat4.create()
     mat4.identity @model
     @texBuffer = gl.createBuffer()
@@ -17,4 +17,4 @@ class TriangleTest
     glUtils.useCamera camera, @model    
     glUtils.setVertexBuffer @vertBuffer, 0, 0    
     glUtils.setTextureBuffer @texBuffer, 0, 0
-    gl.drawArrays gl.TRIANGLES, 0 , 3
+    gl.drawArrays gl.TRIANGLES, 0 , 6
