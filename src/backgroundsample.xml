@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Background>
+    <Sprite>
+    <Vertices>
+      <Coord>-1,-1,0</Coord>
+      <Coord>-1,1,0</Coord>
+      <Coord>1,1,0</Coord>
+      <Coord>-1,-1,0</Coord>
+      <Coord>1,-1,0</Coord>
+      <Coord>1,1,0</Coord>
+    </Vertices>
+    <Textures>
+      <Coord>0,0</Coord>
+      <Coord>0,1</Coord>
+      <Coord>1,1</Coord>
+      <Coord>0,0</Coord>
+      <Coord>1,0</Coord>
+      <Coord>1,1</Coord>
+    </Textures>
+    <Animations>
+      <Animation>
+        <Name>background_sample</Name>
+        <FrameCount>1</FrameCount>
+        <Files>
+          <File>backgroundsample.png</File>
+        </Files>
+      </Animation>
+    </Animations>
+  </Sprite>
+</Background>
