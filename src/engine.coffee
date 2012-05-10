@@ -10,6 +10,7 @@ class Engine
   draw: ->
     gl.clearColor Math.random(), Math.random(), Math.random(), 1.0
     gl.clear gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT
+    @bg.draw @worldCam
     @triangle.draw @worldCam
 
   initialize: ->
@@ -34,6 +35,8 @@ class Engine
     @worldCam.lookAt 0, 0
     @worldCam.setBounds -1, 1, -1, 1
     @triangle = new TriangleTest()
+    @bg = new Background 'src/backgroundsample.xml'
+    @bg.load()
     @initialized = true
 
   update: (elapsed) ->

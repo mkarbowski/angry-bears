@@ -17,6 +17,7 @@ Engine = (function() {
   Engine.prototype.draw = function() {
     gl.clearColor(Math.random(), Math.random(), Math.random(), 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    this.bg.draw(this.worldCam);
     return this.triangle.draw(this.worldCam);
   };
 
@@ -45,6 +46,8 @@ Engine = (function() {
     this.worldCam.lookAt(0, 0);
     this.worldCam.setBounds(-1, 1, -1, 1);
     this.triangle = new TriangleTest();
+    this.bg = new Background('src/backgroundsample.xml');
+    this.bg.load();
     return this.initialized = true;
   };
 

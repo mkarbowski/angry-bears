@@ -20,7 +20,7 @@ class Animation
 
   load: ->
     for file in @resources
-      @textures.push new GLTexture file
+      @textures.push new GLTexture 'resources/' + file
     return null
 
   unload: ->

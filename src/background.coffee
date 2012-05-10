@@ -1,14 +1,27 @@
 class Background
   constructor: (file) ->
-    @sprite = undefined
-    xmlHttp = new XMLHttpRequest()
-    that = this
-    xmlHttp.onreadystatechanged = ->
+    @loaded = false
+    @sprite = null
+    @xmlHttp = new XMLHttpRequest()
+    that = this    
+    @xmlHttp.onreadystatechanged = ->
       dom = that.xmlHttp.requestXml
-      @sprite = new Sprite dom.getElementsByTagName('Sprite')[0]
-
+      that.sprite = new Sprite dom.getElementsByTagName('Sprite')[0]
+      that.loaded = true
+      alert 'lol'
+    @xmlHttp.open 'GET', file, false
+    @xmlHttp.send()
     @model = mat4.create()
-    mat4.setIdentity @model
+    mat4.identity @model
 
   draw: (camera) ->
-    @sprite.draw camera, @model
+    if @sprite? and @sprite.loaded
+      @sprite.draw camera, @model
+
+  load: ->
+    #@sprite.load()
+    return null
+
+  unload: ->
+    @sprite.unload()
+    return null

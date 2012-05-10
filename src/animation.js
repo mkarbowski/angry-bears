@@ -34,7 +34,7 @@ Animation = (function() {
     _ref = this.resources;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       file = _ref[_i];
-      this.textures.push(new GLTexture(file));
+      this.textures.push(new GLTexture('resources/' + file));
     }
     return null;
   };
